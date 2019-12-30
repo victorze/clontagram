@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Main from '../Components/Main';
 import imageSignup from '../images/signup.png';
 
@@ -90,7 +92,7 @@ export default function Signup({ signup }) {
             />
             <button className="Form__submit" type="submit">Sign up</button>
             <p className="FormContainer__info">
-              ¿Ya tienes cuenta? <a href="/login">Login</a>
+              ¿Ya tienes cuenta? <Link to="/login">Login</Link>
             </p>
           </form>
         </div>

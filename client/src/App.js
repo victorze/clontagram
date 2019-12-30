@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Axios from 'axios';
 
 import { setToken, deleteToken, getToken, initAxiosInterceptors} from './Helpers/auth-helpers';
@@ -63,11 +64,40 @@ export default function App() {
   }
 
   return (
-    <div className="ContenedorTemporal">
+    <Router>
       <Nav />
-      {/*<Signup signup={signup}/>*/}
-      <Login login={login}/>
-      <div>{ JSON.stringify(user) }</div>
-    </div>
+      {user ? (
+        <LoginRoutes />
+      ) : (
+        <LogoutRoutes login={login} signup={signup} />
+      )}
+    </Router>
   );
+}
+
+function LoginRoutes() {
+  return (
+    <Switch>
+      <Route
+        path="/"
+        component={() => <Main center><h1>Soy el feed</h1></Main>}
+        default
+      />
+    </Switch>
+  )
+}
+
+function LogoutRoutes({ login, signup }) {
+  return (
+    <Switch>
+      <Route
+        path="/login/"
+        render={props => <Login {...props} login={login} />}
+      />
+      <Route
+        render={props => <Signup {...props} signup={signup} />}
+        default
+      />
+    </Switch>
+  )
 }

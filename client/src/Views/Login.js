@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Main from '../Components/Main';
 
 export default function Login({ login }) {
@@ -52,7 +53,7 @@ export default function Login({ login }) {
             Login
           </button>
           <p className="FormContainer__info">
-            ¿No tienes cuenta? <a href="/signup">Signup</a>
+            ¿No tienes cuenta? <Link to="/signup">Signup</Link>
           </p>
         </form>
       </div>
