@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
 import Main from '../Components/Main';
 import imageSignup from '../images/signup.png';
 
-export default function Signup() {
+export default function Signup({ signup }) {
   const [user, setUser] = useState({
-    email: 'victorze@gmail.com',
-    username: 'victorze',
-    password: 'secret',
+    email: '',
+    username: '',
+    password: '',
     bio: '',
     nombre: '',
   });
@@ -23,8 +22,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const { data } = await Axios.post('/api/usuarios/signup', user);
-      console.log(data);
+      signup(user);
     } catch (error) {
       console.log(error)
     }
