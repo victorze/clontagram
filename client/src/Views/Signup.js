@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Main from '../Components/Main';
 import imageSignup from '../images/signup.png';
 
-export default function Signup({ signup }) {
+export default function Signup({ signup, showError }) {
   const [user, setUser] = useState({
     email: '',
     username: '',
@@ -24,8 +24,9 @@ export default function Signup({ signup }) {
     e.preventDefault();
 
     try {
-      signup(user);
+      await signup(user);
     } catch (error) {
+      showError(error.response.data);
       console.log(error)
     }
   }

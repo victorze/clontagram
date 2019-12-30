@@ -3,18 +3,20 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Axios from 'axios';
 
 import { setToken, deleteToken, getToken, initAxiosInterceptors} from './Helpers/auth-helpers';
+import Main from './Components/Main';
 import Nav from './Components/Nav';
+import Loading from './Components/Loading';
+import Error from './Components/Error';
 
 import Signup from './Views/Signup';
 import Login from './Views/Login';
-import Loading from './Components/Loading';
-import Main from './Components/Main';
 
 initAxiosInterceptors();
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
+  const [error, setError] = useState(null);
 
   async function login(email, password) {
     const { data } = await Axios.post('/api/usuarios/login', {email, password});
@@ -50,6 +52,14 @@ export default function App() {
     console.log(data);
   }
 
+  function showError(message) {
+    setError(message);
+  }
+
+  function hideError() {
+    setError(null);
+  }
+
   function logout() {
     setUser(null);
     deleteToken();
@@ -66,10 +76,11 @@ export default function App() {
   return (
     <Router>
       <Nav />
+      <Error message={error} hideError={hideError}/>
       {user ? (
         <LoginRoutes />
       ) : (
-        <LogoutRoutes login={login} signup={signup} />
+        <LogoutRoutes login={login} signup={signup} showError={showError}/>
       )}
     </Router>
   );
@@ -87,15 +98,15 @@ function LoginRoutes() {
   )
 }
 
-function LogoutRoutes({ login, signup }) {
+function LogoutRoutes({ login, signup, showError}) {
   return (
     <Switch>
       <Route
         path="/login/"
-        render={props => <Login {...props} login={login} />}
+        render={props => <Login {...props} login={login} showError={showError} />}
       />
       <Route
-        render={props => <Signup {...props} signup={signup} />}
+        render={props => <Signup {...props} signup={signup} showError={showError} />}
         default
       />
     </Switch>
