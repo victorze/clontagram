@@ -1,15 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCameraRetro } from '@fortawesome/free-solid-svg-icons';
 
-export default function Nav() {
+export default function Nav({ user }) {
   return (
     <nav className="Nav">
       <ul className="Nav__links">
         <li>
-          <a href="/" className="Nav__link">
+          <Link to="/" className="Nav__link">
             Clontagram
-          </a>
+          </Link>
         </li>
+        {user && <LoginRoutes />}
       </ul>
     </nav>
   );
+}
+
+function LoginRoutes() {
+  return (
+    <>
+      <li className="Nav__link-push">
+        <Link className="Nav__link" to="/upload">
+          <FontAwesomeIcon icon={faCameraRetro}></FontAwesomeIcon>
+        </Link>
+      </li>
+    </>
+  )
 }
