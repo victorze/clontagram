@@ -106,7 +106,7 @@ function Post({
         <Avatar user={usuario} />
 
         <div className="Post__comentarios-y-like">
-          <Comments user={usuario} caption={caption} comments={comentarios}/>
+          <Comments user={usuario} caption={caption} comments={comentarios} />
           <div className="Post__like">
             <ButtonLike onSubmitLike={onSubmitLike} like={estaLike} />
           </div>

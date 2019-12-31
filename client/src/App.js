@@ -13,6 +13,7 @@ import Login from './Views/Login';
 import Upload from './Views/Upload';
 import Feed from './Views/Feed';
 import Post from './Views/Post';
+import Explore from './Views/Explore';
 
 initAxiosInterceptors();
 
@@ -99,6 +100,10 @@ function LoginRoutes({ showError, user }) {
       <Route
         path="/post/:id"
         render={props => <Post {...props} showError={showError} user={user} />}
+      />
+      <Route
+        path="/explore"
+        render={props => <Explore {...props} showError={showError} />}
       />
       <Route
         path="/"
