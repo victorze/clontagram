@@ -12,9 +12,13 @@ async function loadPosts(dateOfLastPost) {
   return newPosts;
 }
 
+const POSTS_PER_CALL = 3;
+
 export default function Feed({ showError, user }) {
   const [posts, setPosts] = useState([]);
   const [loadingInitialPosts, setLoadingInitialPosts] = useState(true);
+  const [loadingMorePosts, setLoadingMorePosts] = useState(false);
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false);
 
   // Se ejecuta cuando el componente se renderiza por primera vez
   useEffect(() => {
@@ -24,6 +28,7 @@ export default function Feed({ showError, user }) {
         setPosts(newPosts);
         console.log(newPosts);
         setLoadingInitialPosts(false);
+        checkMorePosts(newPosts);
       } catch (error) {
         showError('Hubo un problema cargando tu feed');
         console.log(error);
@@ -41,9 +46,33 @@ export default function Feed({ showError, user }) {
         }
         return updatedPost;
       });
-      
+
       return updatedPosts;
     });
+  }
+
+  async function loadMorePosts() {
+    if (loadingMorePosts) {
+      return;
+    }
+
+    try {
+      setLoadingMorePosts(true);
+      const dateOfLastPost = posts[posts.length - 1].fecha_creado;
+      const newPosts = await loadPosts(dateOfLastPost);
+      setPosts(oldPosts => [...oldPosts, ...newPosts]);
+      setLoadingMorePosts(false);
+      checkMorePosts(newPosts);
+    } catch (error) {
+      setLoadingMorePosts(false);
+      showError('Hubo un problema cargando los siguientes posts.')
+    }
+  }
+
+  function checkMorePosts(newPosts) {
+    if (newPosts.length < POSTS_PER_CALL) {
+      setAllPostsLoaded(true);
+    }
   }
 
   if (loadingInitialPosts) {
@@ -74,6 +103,7 @@ export default function Feed({ showError, user }) {
             user={user}
           />
         ))}
+        <LoadMorePosts onClick={loadMorePosts} allPostsLoaded={allPostsLoaded}/>
       </div>
     </Main>
   );
@@ -91,5 +121,17 @@ function YouDontFollowAnyone() {
         </Link>
       </div>
     </div>
+  );
+}
+
+function LoadMorePosts({ onClick, allPostsLoaded }) {
+  if (allPostsLoaded) {
+    return <div className="Feed__no-hay-mas-posts">No hay más posts</div>;
+  }
+
+  return (
+    <button className="Feed__cargar-mas" onClick={onClick}>
+      Ver más
+    </button>
   );
 }

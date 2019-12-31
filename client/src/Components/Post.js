@@ -41,7 +41,7 @@ export default function Post({ post, updatePost, showError, user}) {
 
   async function onSubmitComment(message) {
     const updatedPost = await comment(post, message, user);
-      updatePost(post, updatedPost);
+    updatePost(post, updatedPost);
   }
 
   return (
