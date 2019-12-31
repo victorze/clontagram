@@ -11,6 +11,7 @@ import Error from './Components/Error';
 import Signup from './Views/Signup';
 import Login from './Views/Login';
 import Upload from './Views/Upload';
+import Feed from './Views/Feed';
 
 initAxiosInterceptors();
 
@@ -79,7 +80,7 @@ export default function App() {
       <Nav user={user}/>
       <Error message={error} hideError={hideError}/>
       {user ? (
-        <LoginRoutes showError={showError}/>
+        <LoginRoutes showError={showError} user={user}/>
       ) : (
         <LogoutRoutes login={login} signup={signup} showError={showError}/>
       )}
@@ -87,7 +88,7 @@ export default function App() {
   );
 }
 
-function LoginRoutes({ showError }) {
+function LoginRoutes({ showError, user }) {
   return (
     <Switch>
       <Route
@@ -96,7 +97,7 @@ function LoginRoutes({ showError }) {
       />
       <Route
         path="/"
-        component={() => <Main center><h1>Soy el feed</h1></Main>}
+        render={props => <Feed {...props} showError={showError} user={user}/>}
         default
       />
     </Switch>
