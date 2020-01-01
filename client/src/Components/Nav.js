@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCameraRetro } from '@fortawesome/free-solid-svg-icons';
-import { faCompass } from '@fortawesome/free-regular-svg-icons';
+import { faCompass, faUser } from '@fortawesome/free-regular-svg-icons';
 
 export default function Nav({ user }) {
   return (
@@ -13,13 +13,13 @@ export default function Nav({ user }) {
             Clontagram
           </Link>
         </li>
-        {user && <LoginRoutes />}
+        {user && <LoginRoutes user={user} />}
       </ul>
     </nav>
   );
 }
 
-function LoginRoutes() {
+function LoginRoutes({ user }) {
   return (
     <>
       <li className="Nav__link-push">
@@ -30,6 +30,11 @@ function LoginRoutes() {
       <li className="Nav__link-margin-left">
         <Link className="Nav__link" to="/explore">
           <FontAwesomeIcon icon={faCompass}></FontAwesomeIcon>
+        </Link>
+      </li>
+      <li className="Nav__link-margin-left">
+        <Link className="Nav__link" to={`/perfil/${user.username}`}>
+          <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
         </Link>
       </li>
     </>

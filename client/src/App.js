@@ -14,6 +14,7 @@ import Upload from './Views/Upload';
 import Feed from './Views/Feed';
 import Post from './Views/Post';
 import Explore from './Views/Explore';
+import Profile from './Views/Profile';
 
 initAxiosInterceptors();
 
@@ -82,7 +83,7 @@ export default function App() {
       <Nav user={user}/>
       <Error message={error} hideError={hideError}/>
       {user ? (
-        <LoginRoutes showError={showError} user={user}/>
+        <LoginRoutes showError={showError} user={user} logout={logout}/>
       ) : (
         <LogoutRoutes login={login} signup={signup} showError={showError}/>
       )}
@@ -90,7 +91,7 @@ export default function App() {
   );
 }
 
-function LoginRoutes({ showError, user }) {
+function LoginRoutes({ showError, user, logout }) {
   return (
     <Switch>
       <Route
@@ -104,6 +105,12 @@ function LoginRoutes({ showError, user }) {
       <Route
         path="/explore"
         render={props => <Explore {...props} showError={showError} />}
+      />
+      <Route
+        path="/perfil/:username"
+        render={props => (
+          <Profile {...props} showError={showError}  user={user} logout={logout}/>
+        )}
       />
       <Route
         path="/"
